@@ -1,0 +1,98 @@
+# Project Rules — Terraform + Azure
+
+> This file was generated from the [tesa-blueprints](https://github.com/tesa-blueprints) organization.
+> Sources: blueprint-project-management, blueprint-security-advisory, blueprint-terraform-guide.
+> Use case: Terraform Infrastructure as Code with Azure as the hyperscaler.
+
+---
+
+## Language
+
+- All documentation, comments, commit messages, PR descriptions, and issue descriptions must be written in English. No exceptions.
+
+## Git & Workflow
+
+- Every code change must have an associated GitHub Issue — no exceptions
+- Always work on feature branches: `feature/`, `fix/`, `chore/`, `docs/`
+- Use Conventional Commits: `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`
+- Every branch merges into `main` via Pull Request with at least one approval
+- Reference issues with `Closes #123` in PRs and commits
+
+## Formatting & Syntax
+
+- Run `terraform fmt` before every commit
+- Use snake_case for all Terraform resource names, variables, and outputs
+- Use 2 spaces for indentation (Terraform standard)
+
+## Variables
+
+- Every variable must have `type` and `description`
+- Use `validation` blocks for input constraints
+- Mark secrets with `sensitive = true`
+- Set sensible defaults only where there is a clear standard choice
+- No default values for environment-specific variables (environment, project, owner)
+
+## Resource Naming
+
+- Azure resources: `{prefix}-{env}-{name}` format (e.g., `rg-prod-platform`)
+- Storage Accounts and Container Registries: no hyphens (Azure restriction)
+- Terraform resource names: descriptive, `this` only when there is exactly one instance
+
+## Tags
+
+- Tag ALL Azure resources with: environment, project, owner, cost-center, managed-by=terraform
+- Use `local.common_tags` and assign them to every resource
+- Do not add tags that change frequently
+
+## State
+
+- Remote state in Azure Storage — never commit .tfstate files
+- State key format: `{environment}/{project}.tfstate`
+- Commit `.terraform.lock.hcl` (provider lockfile)
+- Never commit `terraform.tfvars` (contains real values) — use `.tfvars.example`
+
+## Modules
+
+- Always pin module versions to a Git tag (`ref=v1.2.0`), never to `ref=main`
+- Every module has: main.tf, variables.tf, outputs.tf, versions.tf, README.md
+- Document all outputs with `description`
+- Keep modules focused: one concern per module
+- Max. 2 levels of module nesting
+
+## Patterns & Best Practices
+
+- Use `for_each` instead of `count` for resources that need stable addressing
+- Use `locals` for computed values — no repeated expressions
+- Use `data` sources for existing resources — no hardcoded IDs
+- Pin provider versions with pessimistic constraint (`~>`)
+- Group files logically: main.tf, variables.tf, outputs.tf, locals.tf, data.tf, providers.tf, versions.tf, backend.tf
+
+## Azure-Specific
+
+- Prefer Managed Identities over Service Principals
+- Use Private Endpoints for PaaS services
+- Enable Diagnostic Settings for ALL resources that support them — this is mandatory
+- Send all logs to a central Log Analytics Workspace
+- Use `category_group = "allLogs"` and `metric { category = "AllMetrics" }` as default
+- Set `prevent_deletion_if_contains_resources = true` for Resource Groups
+- Set `purge_soft_delete_on_destroy = false` for Key Vaults
+
+## CI/CD
+
+- Plan on PRs, apply only on merge into main
+- Never use `cancel-in-progress: true` for Terraform pipelines
+- Use OIDC for Azure authentication in GitHub Actions
+- Approval gates for production environments
+
+## Security
+
+- Never commit secrets, credentials, or API keys
+- Use Azure Key Vault for production secrets, Managed Identities for access
+- Enable Dependabot, CodeQL, Secret Scanning, and Push Protection on every repo
+- Pin GitHub Actions to commit SHA, never to tags
+
+## Documentation
+
+- Every project must have a README with architecture overview
+- Update README when infrastructure changes
+- Write an ADR for significant architecture decisions
