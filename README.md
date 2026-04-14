@@ -17,6 +17,14 @@ cp starters/CLAUDE-terraform.md /path/to/your/project/CLAUDE.md
 cp starters/CLAUDE-fullstack.md /path/to/your/project/CLAUDE.md
 ```
 
+Also copy the custom commands for interactive workflows:
+
+```bash
+cp -r commands/ /path/to/your/project/.claude/commands/
+```
+
+Then use in any Claude Code session: `/project:review`, `/project:pre-pr`, `/project:add-feature`, etc.
+
 For the full setup guide, see [CLAUDE-INTEGRATION-GUIDE.md](CLAUDE-INTEGRATION-GUIDE.md).
 
 ## Blueprints
@@ -61,8 +69,26 @@ Standards are enforced at 4 levels:
 | **CI Pipeline** | Tests, security scans, npm audit, SBOM | At PR time | Yes |
 | **Branch Protection + Code Review** | PR approval, CODEOWNERS | At merge time | Human review |
 
+## Custom Commands (Slash Commands)
+
+Copy `commands/` into your project as `.claude/commands/` to get interactive workflows:
+
+| Command | What It Does |
+|---------|-------------|
+| `/project:review` | Full code review against all standards |
+| `/project:security-audit` | Security-focused audit (secrets, OWASP, deps) |
+| `/project:pre-pr` | Pre-PR checklist with automated checks |
+| `/project:setup-repo` | Guided new repo setup with all configs |
+| `/project:check-docs` | Verify documentation completeness |
+| `/project:add-feature` | Guided feature workflow (issue → branch → implement → test → PR) |
+| `/project:fix-bug` | Guided bug fix (issue → branch → regression test → fix → PR) |
+| `/project:update-deps` | Dependency audit, updates, and cleanup |
+| `/project:terraform-review` | Terraform-specific review (fmt, tags, diagnostics) |
+| `/project:architecture-review` | Architecture documentation and structure review |
+
 ## This Repo
 
 `placeholder-codespace` serves as the central hub and working environment (GitHub Codespace) for managing the blueprints. It contains:
 - `starters/` — Ready-to-use combined CLAUDE.md files
+- `commands/` — Custom slash commands for Claude Code sessions
 - `CLAUDE-INTEGRATION-GUIDE.md` — Full guide on how to use blueprints with Claude Code

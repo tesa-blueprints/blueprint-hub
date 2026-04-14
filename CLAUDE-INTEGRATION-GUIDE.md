@@ -57,6 +57,36 @@ Each blueprint serves two purposes: **human-readable guides** (in `docs/`) and *
 | [blueprint-terraform-guide](https://github.com/tesa-blueprints/blueprint-terraform-guide) | Terraform + Azure | `claude-config/CLAUDE.md` |
 | [blueprint-application-coding-guide](https://github.com/tesa-blueprints/blueprint-application-coding-guide) | TypeScript, React, Node.js | `claude-config/CLAUDE.md`, `CLAUDE-frontend.md`, `CLAUDE-backend.md` |
 
+## Custom Commands (Slash Commands)
+
+Beyond passive rules, the blueprints provide **active slash commands** that developers can invoke in Claude Code sessions.
+
+### Setup
+
+```bash
+# Copy commands into your project
+cp -r commands/ my-project/.claude/commands/
+```
+
+### Available Commands
+
+| Command | When to Use |
+|---------|-------------|
+| `/project:review` | After completing work — full code review against standards |
+| `/project:security-audit` | Before release or when adding auth/data handling code |
+| `/project:pre-pr` | Before creating a PR — runs all checks automatically |
+| `/project:setup-repo` | When creating a new repository from scratch |
+| `/project:check-docs` | After adding features — verify docs are complete |
+| `/project:add-feature {description}` | Starting new feature work — guides the full workflow |
+| `/project:fix-bug {description}` | Starting a bug fix — ensures regression test first |
+| `/project:update-deps` | Monthly or when Dependabot PRs pile up |
+| `/project:terraform-review` | After Terraform changes — checks naming, tags, diagnostics |
+| `/project:architecture-review` | After architecture changes or periodically |
+
+### How They Work
+
+Commands are markdown files in `.claude/commands/` that define structured prompts. When you type `/project:review`, Claude reads the corresponding markdown file and follows its instructions. They combine code analysis, automated checks, and structured reporting.
+
 ## How It Works
 
 1. Claude Code reads `CLAUDE.md` from your project root when it opens a session
