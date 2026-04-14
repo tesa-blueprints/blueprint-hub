@@ -144,3 +144,44 @@
 - Update README.md when adding features or changing architecture
 - Write an ADR for architecture decisions
 - Maintain the changelog under `[Unreleased]`
+
+---
+
+## Definition of Done — Mandatory Pre-Commit Checklist
+
+**CRITICAL: Before completing ANY task, you MUST verify every item on this checklist. Do not report a task as done until all applicable items are confirmed. This is not optional.**
+
+### After EVERY application code change:
+
+- [ ] **Tests:** New/modified code has corresponding automated tests (feature → test, bug fix → regression test, behavior change → updated tests)
+- [ ] **Tests pass:** `npm test` passes with zero failures
+- [ ] **Linting:** `eslint . --max-warnings 0` passes
+- [ ] **Type check:** `tsc --noEmit` passes
+- [ ] **No secrets:** No API keys, passwords, tokens, or credentials in the code
+
+### After EVERY infrastructure change:
+
+- [ ] **Formatting:** `terraform fmt -check -recursive` passes
+- [ ] **Validation:** `terraform validate` passes
+- [ ] **Linting:** `tflint --recursive` passes
+- [ ] **Plan:** `terraform plan` reviewed — no unexpected destroys or changes
+- [ ] **Tags:** All new resources have mandatory tags
+- [ ] **Diagnostics:** All new resources have Diagnostic Settings configured
+
+### After EVERY change (application or infrastructure):
+
+- [ ] **Documentation:** README.md is updated if you added a feature, changed the API, modified configuration, or altered the architecture
+- [ ] **Changelog:** Feature, fix, or breaking change → entry added under `[Unreleased]`
+- [ ] **Architecture:** If architecture changed, documentation/diagram is updated
+- [ ] **Issue reference:** Commit message references the issue (`Closes #123`)
+- [ ] **Conventional Commit:** Message format `{type}({scope}): {description}`
+
+### Self-check prompt:
+
+Before you say "done", ask yourself:
+1. If a new developer clones this repo tomorrow, will the README and docs be accurate?
+2. If this code breaks in production, will the tests catch it?
+3. If a security auditor reviews this commit, will they find any issues?
+4. If someone runs `terraform plan`, will there be surprises?
+
+If the answer to any of these is "no" — you are not done.

@@ -131,3 +131,38 @@ Separate groups with a blank line.
 - Use transactions for related operations
 - Soft delete for business-critical data
 - Index foreign keys and frequently queried fields
+
+---
+
+## Definition of Done — Mandatory Pre-Commit Checklist
+
+**CRITICAL: Before completing ANY task, you MUST verify every item on this checklist. Do not report a task as done until all applicable items are confirmed. This is not optional.**
+
+### After EVERY code change:
+
+- [ ] **Tests:** New or modified code has corresponding automated tests. If you added a feature, there are tests. If you fixed a bug, there is a regression test. If you changed behavior, existing tests are updated.
+- [ ] **Tests pass:** All tests pass locally. Run `npm test` and confirm zero failures.
+- [ ] **Linting:** Code passes linting with zero errors AND zero warnings. Run `eslint . --max-warnings 0`.
+- [ ] **Type check:** TypeScript compiles without errors. Run `tsc --noEmit`.
+- [ ] **Documentation:** README.md is updated if you added a new feature, changed the API, modified configuration, or altered the architecture. If the change is user-facing, it is documented.
+- [ ] **Changelog:** If this is a feature, fix, or breaking change, an entry has been added under `[Unreleased]` in the changelog.
+- [ ] **Architecture:** If you changed the architecture (new service, new database, new integration), the architecture documentation/diagram is updated.
+- [ ] **No secrets:** No API keys, passwords, tokens, or credentials in the code. Check for hardcoded strings.
+- [ ] **Issue reference:** The commit message references the issue with `Closes #123` or `Fixes #456`.
+- [ ] **Conventional Commit:** The commit message follows the format `{type}({scope}): {description}`.
+
+### When creating a PR:
+
+- [ ] PR description includes: Summary, Changes, Type, Testing section
+- [ ] PR links to the Issue
+- [ ] PR is within 500 lines (split if larger)
+- [ ] Screenshots attached for UI changes
+
+### Self-check prompt:
+
+Before you say "done", ask yourself:
+1. If a new developer clones this repo tomorrow, will the README and docs be accurate?
+2. If this code breaks in production, will the tests catch it?
+3. If a security auditor reviews this commit, will they find any issues?
+
+If the answer to any of these is "no" — you are not done.

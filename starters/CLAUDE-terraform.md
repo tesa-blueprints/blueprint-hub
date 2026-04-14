@@ -96,3 +96,33 @@
 - Every project must have a README with architecture overview
 - Update README when infrastructure changes
 - Write an ADR for significant architecture decisions
+
+---
+
+## Definition of Done — Mandatory Pre-Commit Checklist
+
+**CRITICAL: Before completing ANY task, you MUST verify every item on this checklist. Do not report a task as done until all applicable items are confirmed. This is not optional.**
+
+### After EVERY infrastructure change:
+
+- [ ] **Formatting:** `terraform fmt -check -recursive` passes with no changes needed.
+- [ ] **Validation:** `terraform validate` passes without errors.
+- [ ] **Linting:** `tflint --recursive` passes without errors.
+- [ ] **Plan review:** `terraform plan` has been run and the output reviewed. No unexpected destroys or changes.
+- [ ] **Tags:** All new resources have the mandatory tags (environment, project, owner, cost-center, managed-by).
+- [ ] **Diagnostic Settings:** All new resources that support Diagnostic Settings have them configured.
+- [ ] **Documentation:** README.md is updated if you added new resources, changed the architecture, or modified inputs/outputs.
+- [ ] **Variables:** All new variables have `type`, `description`, and `validation` blocks where appropriate.
+- [ ] **No secrets:** No hardcoded credentials, connection strings, or keys in .tf files. Check for hardcoded strings.
+- [ ] **State:** No .tfstate files staged. `.terraform.lock.hcl` is committed if provider versions changed.
+- [ ] **Issue reference:** The commit message references the issue with `Closes #123` or `Fixes #456`.
+- [ ] **Conventional Commit:** The commit message follows the format `{type}({scope}): {description}`.
+
+### Self-check prompt:
+
+Before you say "done", ask yourself:
+1. If someone runs `terraform plan` on this code, will there be surprises?
+2. If a new team member reads the README, will they understand the current infrastructure?
+3. Are all resources tagged and logging to Log Analytics?
+
+If the answer to any of these is "no" — you are not done.
