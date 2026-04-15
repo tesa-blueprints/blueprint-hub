@@ -45,6 +45,24 @@ Review the Terraform codebase against the tesa-blueprints Terraform standards.
 - [ ] `prevent_deletion_if_contains_resources = true` on Resource Groups
 - [ ] `purge_soft_delete_on_destroy = false` on Key Vaults
 
+### 7b. Resource Locks
+- [ ] Production resource groups have `CanNotDelete` lock
+- [ ] Databases, Key Vaults, Storage Accounts in prod are locked
+- [ ] Hub networking (VNet, DNS) has `ReadOnly` lock in prod
+
+### 7c. RBAC
+- [ ] No `Owner` role at subscription level for apps or pipelines
+- [ ] Roles assigned at resource group scope (not subscription)
+- [ ] Applications use specific data-plane roles (`Key Vault Secrets User`, `Storage Blob Data Reader`), not `Contributor`
+- [ ] Separate identities per environment (no shared credentials)
+
+### 7d. Resource Hardening
+- [ ] Storage Accounts: TLS 1.2, no public blob access, network deny by default, no shared access keys
+- [ ] Key Vaults: purge protection enabled, RBAC auth, network deny by default
+- [ ] SQL: TLS 1.2, Azure AD auth (no SQL passwords), TDE, audit logging in prod
+- [ ] App Services: HTTPS only, TLS 1.2, FTP disabled, Managed Identity
+- [ ] NSGs: Deny all inbound by default
+
 ### 8. Environment-Specific Checks
 - Identify the target environment (dev/staging/prod)
 - If **production**:
