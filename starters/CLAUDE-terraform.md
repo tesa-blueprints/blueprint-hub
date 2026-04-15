@@ -29,6 +29,7 @@ This project has custom slash commands in `.claude/commands/`. Use them:
 ## Git & Workflow
 
 - Every code change must have an associated GitHub Issue — no exceptions
+- Issues must be created in THIS repository — never in a central/separate repo. For cross-repo references use `org/repo#123`.
 - Always work on feature branches: `feature/`, `fix/`, `chore/`, `docs/`
 - Use Conventional Commits: `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`
 - Every branch merges into `main` via Pull Request with at least one approval
