@@ -79,9 +79,27 @@ Initialize with Keep a Changelog format.
 ### `.gitignore`
 Comprehensive gitignore for the project type (node_modules, .env, dist, .terraform, etc.)
 
+## Step 8: Compliance Baseline
+
+Ask the user: Does this project handle personal data of EU users?
+
+If yes, remind them of GDPR requirements:
+- Data minimization in all queries
+- No PII in logs
+- Data deletion and export endpoints needed
+- EU data residency (West Europe / North Europe)
+- Breach notification process (72 hours)
+
+For all projects, note the applicable frameworks:
+- ISO 27001 (secure development lifecycle)
+- Cyber Resilience Act (SBOM, vulnerability disclosure, secure by default)
+- NIS2 (if applicable: incident reporting, supply chain security)
+
 ## Output
 
 After setup, display:
 1. List of all files created
 2. Remaining manual steps (enable branch protection, Dependabot, CodeQL in GitHub settings)
-3. Link to the full setup checklist
+3. Applicable compliance frameworks and any additional steps needed
+4. Link to the full setup checklist
+5. Reminder to configure environment-specific security (see environment security matrix)

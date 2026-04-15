@@ -11,6 +11,8 @@ If the user provided specific files or a scope, focus on that. Otherwise, review
 5. **Architecture:** Layered architecture respected (Controller → Service → Repository), proper separation of concerns
 6. **Git Hygiene:** Conventional commit messages, issue references, no debug artifacts (console.log, TODO hacks)
 7. **Dependencies:** No unused dependencies, lockfile committed, production deps pinned
+8. **Environment:** If code targets production: no debug output, no console.log, strict CORS, no PII in logs, HTTPS only
+9. **Data Protection:** If handling user data: data minimization applied, no PII logged, deletion/export capability exists
 
 ## Output Format
 

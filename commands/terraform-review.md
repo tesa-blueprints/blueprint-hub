@@ -45,7 +45,23 @@ Review the Terraform codebase against the tesa-blueprints Terraform standards.
 - [ ] `prevent_deletion_if_contains_resources = true` on Resource Groups
 - [ ] `purge_soft_delete_on_destroy = false` on Key Vaults
 
-### 8. Validation
+### 8. Environment-Specific Checks
+- Identify the target environment (dev/staging/prod)
+- If **production**:
+  - [ ] Private Endpoints for all PaaS services
+  - [ ] Network Security Groups on all subnets
+  - [ ] WAF / Firewall configured
+  - [ ] Geo-redundancy / DR configured
+  - [ ] Log retention set to 90 days minimum
+  - [ ] Alerting configured
+  - [ ] Key Vault for all secrets (no env vars with credentials)
+  - [ ] Managed Identities (no Service Principal secrets)
+- If **dev**:
+  - [ ] Auto-shutdown configured for VMs
+  - [ ] Smaller SKUs used (cost optimization)
+  - [ ] No real user data in dev resources
+
+### 9. Validation
 - [ ] Run `terraform validate` — any errors?
 - [ ] Run `tflint --recursive` — any warnings/errors?
 - [ ] Run `terraform plan` — any unexpected changes?
