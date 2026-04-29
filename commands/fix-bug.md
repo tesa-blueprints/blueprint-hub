@@ -16,6 +16,15 @@ Create a GitHub Issue for this bug:
 - Include: Description, steps to reproduce, expected/actual behavior, environment
 - Labels: `type: bug`
 
+Two optional questions before creating the issue:
+
+1. **Parent issue?** "Is this bug part of a larger tracking issue or epic? If yes, give the issue number — I'll attach the new issue as a sub-issue after creation." If yes, after the issue is created run:
+   ```bash
+   gh api -X POST repos/{owner}/{repo}/issues/{parent}/sub_issues \
+     -f sub_issue_id={new_issue_id}
+   ```
+2. **Program board?** "Should this bug appear on the cross-repo program board (`track: program`)? Default: **no** — only set this for major incidents with stakeholder visibility." If yes, add `track: program` to the labels list.
+
 ### Step 3: Create Fix Branch
 
 ```bash

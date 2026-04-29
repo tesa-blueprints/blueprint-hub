@@ -8,6 +8,7 @@ This repository is the central entry point of the [tesa-blueprints](https://gith
 - `commands/` — Custom slash commands (`/project:review`, `/project:pre-pr`, `/project:add-feature`, etc.) to be copied into a project's `.claude/commands/`.
 - `CLAUDE-INTEGRATION-GUIDE.md` — Full setup guide for using blueprints with Claude Code in a target project.
 - `REPO-SECURITY-STATUS.md` — Tracking of security posture across the org's repositories.
+- `PROGRAM-BOARD-SETUP.md` — Setup and operations of the cross-repo program-level GitHub Project. Issues labelled `track: program` in any org repo are auto-aggregated here for portfolio visibility.
 
 This repo itself does not contain code — it curates and points to the four content blueprints.
 

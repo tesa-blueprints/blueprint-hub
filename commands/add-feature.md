@@ -10,6 +10,15 @@ Create a GitHub Issue for this feature:
 - Labels: `type: feature`
 - Ask the user to confirm the issue before proceeding
 
+Two optional questions before creating the issue:
+
+1. **Parent issue?** "Is this feature part of a larger epic or parent issue? If yes, give the issue number — I'll attach the new issue as a sub-issue after creation." If yes, after the issue is created run:
+   ```bash
+   gh api -X POST repos/{owner}/{repo}/issues/{parent}/sub_issues \
+     -f sub_issue_id={new_issue_id}
+   ```
+2. **Program board?** "Should this be visible on the cross-repo program board (`track: program`)? Default: **no** — only set this when the issue's status matters at the portfolio level (initiatives, releases, major incidents)." If yes, add `track: program` to the labels list.
+
 ### Step 2: Create Feature Branch
 
 ```bash
