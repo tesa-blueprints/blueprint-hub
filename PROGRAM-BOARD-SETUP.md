@@ -1,38 +1,55 @@
 # Program Board Setup
 
-This document describes how to provision and run the **tesa Program Board** — the cross-repo GitHub Project that aggregates portfolio-relevant issues from every `tesa-blueprints` repo.
+This document describes how to provision and run the **tesa Program Board** — the cross-repo GitHub Project that aggregates portfolio-relevant issues from the source repositories in `tesa-blueprints` (and, in future, other tesa orgs).
 
 The model is documented in [`blueprint-project-management/docs/03-issue-management.md`](https://github.com/tesa-blueprints/blueprint-project-management/blob/main/docs/03-issue-management.md#program-level-aggregation). This file covers the operational setup.
 
 ## What This Is
 
-A single Org-level GitHub Project (`tesa Program`) that automatically pulls in every issue across all org repos labelled `track: program`. The issue stays in its source repo; the Project only holds a card with a back-link. No copies, no sync job.
+A single Org-level GitHub Project (`tesa Program`) hosted in its own dedicated org **[`tesa-program-board`](https://github.com/orgs/tesa-program-board/)**. It automatically pulls in issues from the source repos (currently in `tesa-blueprints`) that carry the `track: program` label. The issue stays in its source repo; the Project only holds a card with a back-link. No copies, no sync job.
 
 | Property | Value |
 |----------|-------|
 | Project name | `tesa Program` |
-| Scope | Org-level (`tesa-blueprints` org) |
+| Project org | `tesa-program-board` |
+| Source repos | `tesa-blueprints/*` (extensible to other tesa orgs later) |
 | Entry criterion | Issue has the label `track: program` |
 | Aggregation mechanic | Project workflow: Auto-add items |
 | Drill-down | Each card links to the source issue |
 
+### Why a separate org for the project?
+
+- **Clear separation of concerns** — repo orgs hold code and issues; the program-board org holds portfolio views. Member lists, permissions, and audit trails stay independent.
+- **Cross-org scaling** — the same board can later aggregate issues from `tesa-platform/*`, other domain orgs, etc., without moving any repos.
+- **Stakeholder access** — program managers can be members of `tesa-program-board` (read-only on the project) without needing membership in the repo orgs.
+
 ## Setup Steps
 
-Perform these once per org. Most steps need org-admin permissions.
+Most steps need admin permissions on `tesa-program-board` (project) and on the source repos in `tesa-blueprints` (label rollout, repository linking).
 
 ### 1. Create the Org Project
 
-1. Go to https://github.com/orgs/tesa-blueprints/projects → **New project**
+1. Go to https://github.com/orgs/tesa-program-board/projects → **New project**
 2. Choose **Board** layout
 3. Name: `tesa Program`
-4. Visibility: **Private** (matches the majority of org repos)
+4. Visibility: **Private**
 
-### 2. Configure the Auto-Add Workflow
+### 2. Link the Source Repositories (Cross-Org Step)
+
+Because the source repos live in a different org, the project needs explicit access to them:
+
+1. In the project: **Settings → Manage access → Add repository**
+2. Search and add each `tesa-blueprints/*` repo from the list below
+3. Verify each repo appears with **read** access for the project
+
+Without this step, the Auto-Add workflow has nothing to scan.
+
+### 3. Configure the Auto-Add Workflow
 
 In the project, go to **Workflows → Auto-add to project**:
 
 - Filter: `is:issue label:"track: program"`
-- Repositories: leave empty to scan **all** org repos, or list them explicitly:
+- Repositories: list each linked source repo explicitly (cross-org auto-add does **not** support "all org repos"):
   ```
   tesa-blueprints/blueprint-hub
   tesa-blueprints/blueprint-project-management
@@ -44,7 +61,9 @@ In the project, go to **Workflows → Auto-add to project**:
 
 Optional companion workflow: **Auto-archive items** when the `track: program` label is removed or the issue is closed.
 
-### 3. Recommended Fields
+When a new repo joins `tesa-blueprints` (or another tesa org), repeat steps 2 and 3 for that repo.
+
+### 4. Recommended Fields
 
 Add these custom fields to the project so the board is useful at a glance:
 
@@ -57,7 +76,7 @@ Add these custom fields to the project so the board is useful at a glance:
 | Owner | Single-select | Team or person responsible |
 | Target Release | Iteration / text | Optional milestone alignment |
 
-### 4. Recommended Views
+### 5. Recommended Views
 
 | View | Layout | Group by | Filter |
 |------|--------|----------|--------|
@@ -66,7 +85,7 @@ Add these custom fields to the project so the board is useful at a glance:
 | Roadmap | Roadmap | Target Release | `priority` ≥ medium |
 | Stuck Items | Table | Status | `Status: Blocked` or last update >14d |
 
-### 5. Roll Out the `track: program` Label Across All Repos
+### 6. Roll Out the `track: program` Label Across All Repos
 
 The label must exist on each repo before contributors can apply it. Run once per repo:
 
@@ -122,7 +141,8 @@ Run periodically to spot stale or mislabelled items.
 
 | Symptom | Likely cause | Fix |
 |---------|--------------|-----|
-| Issue has the label but no card | Auto-add workflow not enabled or repo not in scope | Check the workflow config; confirm the repo is listed |
+| Issue has the label but no card | Auto-add workflow not enabled, or repo not linked, or repo not in workflow filter | Check the workflow is on; confirm the repo is linked under Settings → Manage access; confirm it's listed in the workflow filter |
 | Card stays after label removed | No auto-archive workflow configured | Enable "Auto-archive items" for unlabelled state, or archive manually |
-| New repo's issues not appearing | Repo not in workflow scope | Add the repo to the workflow filter |
+| New repo's issues not appearing | Cross-org link or workflow filter missing | Add the repo under Settings → Manage access **and** add it to the Auto-Add workflow filter |
 | Label missing on a repo | Roll-out script not run | Run the `gh label create` snippet for that repo |
+| "Repository not accessible" error in workflow | Project lacks read on the source repo | Re-link via Settings → Manage access; ensure the linker has admin on both the project org and the source repo |
