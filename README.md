@@ -92,3 +92,4 @@ Copy `commands/` into your project as `.claude/commands/` to get interactive wor
 - `starters/` — Ready-to-use combined CLAUDE.md files
 - `commands/` — Custom slash commands for Claude Code sessions
 - `CLAUDE-INTEGRATION-GUIDE.md` — Full guide on how to use blueprints with Claude Code
+- `PROGRAM-BOARD-SETUP.md` — Setup for the cross-repo program-level project board

@@ -31,6 +31,8 @@ This project has custom slash commands in `.claude/commands/`. Use them:
 
 - Every code change must have an associated GitHub Issue — no exceptions. Create the issue first, then code.
 - Issues must be created in THIS repository — never in a central/separate repo. For cross-repo references use `org/repo#123`.
+- Use GitHub Sub-Issues for hierarchy when work spans more than one PR; sub-issues stay in the same repo as the parent. Cross-repo dependencies use `Tracked by org/repo#123`.
+- Apply the label `track: program` only when an issue's status matters at the portfolio level (initiatives, releases, major incidents). Routine work stays unlabelled.
 - Naming: Orgs `tesa-{domain}`, Repos `tesa-{domain}-{component}` lowercase with hyphens, Secrets `{SERVICE}_{PURPOSE}` UPPER_SNAKE_CASE, Environments full names (`production`, not `prod`).
 - Always work on feature branches, never directly on `main`
 - Branch naming: `{type}/{description}` — e.g., `feature/user-profile`, `fix/login-redirect`, `chore/update-deps`
